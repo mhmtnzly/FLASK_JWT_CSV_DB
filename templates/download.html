@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% block content %}
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100 p-t-50 p-b-90">
+      <form
+        class="login100-form validate-form flex-sb flex-w"
+        method="POST"
+        action="/download"
+      >
+        <span class="login100-form-title p-b-51"> Download </span>
+        <div class="wrap-input100 validate-input m-b-16" data-validate="Search">
+          <select class="input100" name="name-columns" id="name-columns">
+            {% for nameColumn in nameColumns %}
+            <option class="input100" value="{{ nameColumn }}" selected>
+              {{ nameColumn }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="wrap-input100 validate-input m-b-16" data-validate="Search">
+          <select class="input100" name="columns" id="columns">
+            {% for fileType in fileTypes %}
+            <option class="input100" value="{{ fileType }}" selected>
+              {{ fileType }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="flex-sb-m w-full p-t-3 p-b-24">
+          <div>
+            <a href="{{ url_for('home')}}" class="txt1"> Back </a>
+          </div>
+        </div>
+        <div class="container-login100-form-btn m-t-17">
+          <button class="login100-form-btn">Download</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
