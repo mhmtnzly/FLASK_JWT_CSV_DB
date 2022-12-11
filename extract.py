@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import csv
+from flask import make_response
 
 
 class Extract:
@@ -47,8 +48,23 @@ class Extract:
             pd.json_normalize(result)).to_csv(index=False)
         return result
 
+    def download_json_nasdaq(self, data):
+        cols = ['date', 'low', 'open', 'volume',
+                'high', 'close', 'adjustedClose']
+        result = [{col: getattr(d, col) for col in cols} for d in data]
+        result = {'results': result}
+
+        return result
+
     def get_nasdaq_data(self, data):
         cols = ['id', 'date', 'low', 'open', 'volume',
                 'high', 'close', 'adjustedClose']
         result = [{col: getattr(d, col) for col in cols} for d in data]
         return result
+
+    def file_download(self, fileName, data, fileType):
+        response = make_response(data)
+        cd = 'attachment; filename='+fileName+'.' + fileType
+        response.headers['Content-Disposition'] = cd
+        response.mimetype = 'text/'+fileType
+        return response

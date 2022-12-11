@@ -280,13 +280,15 @@ def download(current_user, name=''):
         return render_template('download.html', nameColumns=nameColumns, fileTypes=fileTypes)
     elif request.method == 'POST':
         nameColumn = request.form.get('name-columns')
+        fileType = request.form.get("file-columns")
         data_all = Nasdaq.query.filter(
             Nasdaq.name == nameColumn).order_by(Nasdaq.date).all()
-        result = extract.download_csv_nasdaq(data_all)
-        response = make_response(result)
-        cd = 'attachment; filename='+nameColumn+'.csv'
-        response.headers['Content-Disposition'] = cd
-        response.mimetype = 'text/csv'
+        if fileType == 'csv':
+            result = extract.download_csv_nasdaq(data_all)
+            response = extract.file_download(nameColumn, result, fileType)
+        elif fileType == 'json':
+            result = extract.download_json_nasdaq(data_all)
+            response = extract.file_download(nameColumn, result, fileType)
         return response
 
     return render_template('download.html', nameColumns=nameColumns)
