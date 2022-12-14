@@ -5,18 +5,13 @@ from flask import make_response
 
 
 class Extract:
-    def __init__(self, path='data') -> None:
+    def __init__(self, path='uploads') -> None:
         self.path = path
         self.check_files()
 
     def check_files(self):
         self.file_names = os.listdir(self.path)
         return self.file_names
-
-    # def csv_files_(self):
-    #     self.csv_files = list(filter(lambda x: x.split('.')[
-    #                           1] == 'csv', self.file_names))
-    #     return self.csv_files
 
     def csv_file_name(self, file):
         file = file.split('.')[0]

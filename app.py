@@ -12,20 +12,29 @@ import os
 from extract import Extract
 from werkzeug.utils import secure_filename
 import pandas as pd
+import pyodbc
+from sqlalchemy import create_engine
+import urllib
+from sendEmail import Email
 
 load_dotenv()
 DB_NAME = os.environ.get("DB_NAME")
 DB_USER = os.environ.get("DB_USER")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 DB_HOST = os.environ.get('DB_HOST')
+ODBC = os.environ.get('ODBC')
+connection_string = os.environ.get('connection_string')
 
 app = Flask(__name__)
 extract = Extract()
+email = Email(connection_string)
 
 UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'thisissecret'
+params = urllib.parse.quote_plus(r'{ODBC}')
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+
 ALLOWED_EXTENSIONS = set(['csv', 'json'])
 
 
@@ -266,6 +275,8 @@ def create(current_user):
             df.to_sql(con=db.engine, name='nasdaq',
                       index=False, if_exists='append')
             uploaded.delete_file(file)
+            email.emailSend('x', current_user.email,
+                            result, current_user.name)
         # return result
     return render_template('drop.html', result=result)
 
