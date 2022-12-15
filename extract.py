@@ -21,6 +21,10 @@ class Extract:
         read = pd.read_csv(f'{self.path}/{file}')
         return read
 
+    def reading_json_files(self, file):
+        read = pd.read_json(f'{self.path}/{file}')
+        return read
+
     def df_arrange(self, df, file):
         df['name'] = self.csv_file_name(file)
         df.columns = ['date', 'low', 'open', 'volume',
@@ -63,3 +67,10 @@ class Extract:
         response.headers['Content-Disposition'] = cd
         response.mimetype = 'text/'+fileType
         return response
+
+    def file_type(self, file):
+        fileType = file.split('.')[1]
+        if fileType == 'csv':
+            return self.reading_csv_files(file)
+        elif fileType == 'json':
+            return self.reading_json_files(file)

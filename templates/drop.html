@@ -16,8 +16,14 @@
             name="file[]"
             multiple=""
           />
+          <div class="flex-sb-m w-full p-t-3 p-b-24">
+            <div>
+              <a href="{{ url_for('home')}}" class="txt1"> Back </a>
+            </div>
+          </div>
           <input type="submit" value="upload" class="login100-form-btn" />
         </p>
+        
       </form>
       {% for r in result %}
       <p class="login50-form-title">{{ r.filename }} - {{ r.success }}</p>

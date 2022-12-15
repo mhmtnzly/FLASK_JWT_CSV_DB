@@ -5,6 +5,10 @@
 
     /*==================================================================
     [ Validate ]*/
+    $(".menu-toggle-btn").click(function(){
+        $(this).toggleClass("fa-times");
+        $(".navigation-menu").toggleClass("active");
+      });
     var input = $('.validate-input .input100');
 
     $('.validate-form').on('submit',function(){
